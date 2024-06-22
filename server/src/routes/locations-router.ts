@@ -1,4 +1,5 @@
 import Elysia, { t } from "elysia";
+import { saveFile } from "../lib/file";
 import { LocationModel } from "../models/location";
 
 export const LocationRouter = new Elysia({
@@ -40,6 +41,16 @@ export const LocationRouter = new Elysia({
           last_updated,
         } = body;
 
+        let _imgList: any = [];
+
+        for (const image of images) {
+          const { filename, ok } = saveFile(image, "location");
+
+          if (ok) {
+            _imgList.push(filename);
+          }
+        }
+
         const newLocation = new LocationModel({
           locationName,
           category,
@@ -59,7 +70,7 @@ export const LocationRouter = new Elysia({
           opening_hours,
           entry_fee,
           reviews,
-          images,
+          images: _imgList,
           public_transport,
           parking_available,
           parking_fee,
@@ -90,34 +101,34 @@ export const LocationRouter = new Elysia({
     },
     {
       body: t.Object({
-        locationName: t.String({ minLength: 1 }),
-        category: t.String({ minLength: 1 }),
-        description: t.String({ minLength: 1 }),
-        lat: t.String(),
-        lon: t.String(),
-        address: t.String({ minLength: 1 }),
-        able_to_bath: t.Boolean(),
-        food_available: t.Boolean(),
-        child_safe: t.Boolean(),
-        danger: t.Boolean(),
-        bikes_only: t.Boolean(),
-        cars_accessible: t.Boolean(),
-        wheelchair_accessible: t.Boolean(),
-        restrooms_available: t.Boolean(),
-        popularity: t.Number({ min: 0, max: 5 }),
-        opening_hours: t.String(),
-        entry_fee: t.Number({ min: 0 }),
-        reviews: t.Array(t.String()),
-        images: t.Array(t.String()),
-        public_transport: t.String(),
-        parking_available: t.Boolean(),
-        parking_fee: t.Number({ min: 0 }),
-        nearest_landmark: t.String(),
-        best_season_to_visit: t.String(),
-        historical_significance: t.String(),
-        guided_tours: t.Boolean(),
-        user_ratings: t.Number({ min: 0, max: 5 }),
-        number_of_reviews: t.Number({ min: 0 }),
+        locationName: t.Any({ minLength: 1 }),
+        category: t.Any({ minLength: 1 }),
+        description: t.Any({ minLength: 1 }),
+        lat: t.Any(),
+        lon: t.Any(),
+        address: t.Any({ minLength: 1 }),
+        able_to_bath: t.Any(),
+        food_available: t.Any(),
+        child_safe: t.Any(),
+        danger: t.Any(),
+        bikes_only: t.Any(),
+        cars_accessible: t.Any(),
+        wheelchair_accessible: t.Any(),
+        restrooms_available: t.Any(),
+        popularity: t.Any({ min: 0, max: 5 }),
+        opening_hours: t.Any(),
+        entry_fee: t.Any({ min: 0 }),
+        reviews: t.Any(t.Any()),
+        images: t.Any(t.Any()),
+        public_transport: t.Any(),
+        parking_available: t.Any(),
+        parking_fee: t.Any({ min: 0 }),
+        nearest_landmark: t.Any(),
+        best_season_to_visit: t.Any(),
+        historical_significance: t.Any(),
+        guided_tours: t.Any(),
+        user_ratings: t.Any({ min: 0, max: 5 }),
+        number_of_reviews: t.Any({ min: 0 }),
         last_updated: t.Date(),
       }),
       tags: ["location"],
@@ -166,8 +177,8 @@ export const LocationRouter = new Elysia({
     },
     {
       query: t.Object({
-        page: t.Optional(t.String({ min: 1, max: 100 })),
-        limit: t.Optional(t.String({ min: 1, max: 100 })),
+        page: t.Optional(t.Any({ min: 1, max: 100 })),
+        limit: t.Optional(t.Any({ min: 1, max: 100 })),
       }),
       tags: ["location"],
       detail: {
@@ -202,7 +213,7 @@ export const LocationRouter = new Elysia({
     },
     {
       params: t.Object({
-        id: t.String({ minLength: 1 }),
+        id: t.Any({ minLength: 1 }),
       }),
       tags: ["location"],
       detail: {

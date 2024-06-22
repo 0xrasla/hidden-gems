@@ -33,10 +33,6 @@
 	const opening_hours = field('opening_hours', '9 AM - 6 PM');
 	const entry_fee = field('entry_fee', 10, [min(0)]);
 	const reviews = field('reviews', ['Great place!', 'Enjoyed my visit.']);
-	const images = field('images', [
-		'https://example.com/image1.jpg',
-		'https://example.com/image2.jpg'
-	]);
 	const public_transport = field('public_transport', 'Buses and trains available nearby.');
 	const parking_available = field('parking_available', true);
 	const parking_fee = field('parking_fee', 5, [min(0)]);
@@ -50,6 +46,8 @@
 	const user_ratings = field('user_ratings', 4, [min(0), max(5)]);
 	const number_of_reviews = field('number_of_reviews', 10, [min(0)]);
 	const last_updated = field('last_updated', new Date());
+
+	let images: any = [];
 
 	const addLocationForm = form(
 		locationName,
@@ -70,7 +68,6 @@
 		opening_hours,
 		entry_fee,
 		reviews,
-		images,
 		public_transport,
 		parking_available,
 		parking_fee,
@@ -92,46 +89,56 @@
 	export let toggleForm = () => {};
 
 	async function addLocation() {
+		if (images.length === 0) {
+			toast.error('Please select at least one image');
+			return;
+		}
+
 		await addLocationForm.validate();
 		if ($addLocationForm.valid) {
 			try {
-				const newLocationData = {
-					locationName: $locationName.value,
-					category: $category.value,
-					description: $description.value,
-					lat: $lat.value,
-					lon: $lon.value,
-					address: $address.value,
-					able_to_bath: $able_to_bath.value,
-					food_available: $food_available.value,
-					child_safe: $child_safe.value,
-					danger: $danger.value,
-					bikes_only: $bikes_only.value,
-					cars_accessible: $cars_accessible.value,
-					wheelchair_accessible: $wheelchair_accessible.value,
-					restrooms_available: $restrooms_available.value,
-					popularity: $popularity.value,
-					opening_hours: $opening_hours.value,
-					entry_fee: $entry_fee.value,
-					reviews: $reviews.value,
-					images: $images.value,
-					public_transport: $public_transport.value,
-					parking_available: $parking_available.value,
-					parking_fee: $parking_fee.value,
-					nearest_landmark: $nearest_landmark.value,
-					best_season_to_visit: $best_season_to_visit.value,
-					historical_significance: $historical_significance.value,
-					guided_tours: $guided_tours.value,
-					user_ratings: $user_ratings.value,
-					number_of_reviews: $number_of_reviews.value,
-					last_updated: $last_updated.value
-				};
+				const formData = new FormData();
+				formData.append('locationName', $locationName.value);
+				formData.append('category', $category.value);
+				formData.append('description', $description.value);
+				formData.append('lat', $lat.value);
+				formData.append('lon', $lon.value);
+				formData.append('address', $address.value);
+				formData.append('able_to_bath', $able_to_bath.value.toString());
+				formData.append('food_available', $food_available.value.toString());
+				formData.append('child_safe', $child_safe.value.toString());
+				formData.append('danger', $danger.value.toString());
+				formData.append('bikes_only', $bikes_only.value.toString());
+				formData.append('cars_accessible', $cars_accessible.value.toString());
+				formData.append('wheelchair_accessible', $wheelchair_accessible.value.toString());
+				formData.append('restrooms_available', $restrooms_available.value.toString());
+				formData.append('popularity', $popularity.value.toString());
+				formData.append('opening_hours', $opening_hours.value);
+				formData.append('entry_fee', $entry_fee.value.toString());
+				formData.append('reviews', $reviews.value.toString());
 
-				let res = $addLocationMutation.mutate(newLocationData);
+				for (const image of images) {
+					formData.append('images', image);
+				}
+
+				formData.append('public_transport', $public_transport.value.toString());
+				formData.append('parking_available', $parking_available.value.toString());
+				formData.append('parking_fee', $parking_fee.value.toString());
+				formData.append('nearest_landmark', $nearest_landmark.value.toString());
+				formData.append('best_season_to_visit', $best_season_to_visit.value.toString());
+				formData.append('historical_significance', $historical_significance.value.toString());
+				formData.append('guided_tours', $guided_tours.value.toString());
+				formData.append('user_ratings', $user_ratings.value.toString());
+				formData.append('number_of_reviews', $number_of_reviews.value.toString());
+				formData.append('last_updated', $last_updated.value.toString());
+
+				let res = $addLocationMutation.mutate(formData);
 				addLocationMutation.subscribe((res) => {
 					if (res.isSuccess) {
 						toast.success('Location added successfully');
 						toggleForm();
+						addLocationForm.reset();
+						images = [];
 					}
 
 					if (res.isError) {
@@ -404,10 +411,24 @@
 					<p class="text-sm text-red-500">Number of reviews should be greater than or equal to 0</p>
 				{/if}
 			</div>
+
+			<div class="flex flex-col gap-2">
+				<Label for="images">Images</Label>
+				<input
+					type="file"
+					accept="image/*"
+					multiple
+					placeholder="Select images"
+					name="images"
+					bind:files={images}
+				/>
+			</div>
 		</div>
 
-		<Button disabled={$addLocationMutation.isLoading} type="submit" class="mt-4"
-			>Add Location</Button
-		>
+		<div class="flex justify-end">
+			<Button disabled={$addLocationMutation.isLoading} type="submit" class="mt-4 bg-green-400"
+				>Add Location</Button
+			>
+		</div>
 	</form>
 </section>
