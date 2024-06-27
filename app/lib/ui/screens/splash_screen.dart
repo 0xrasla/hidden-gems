@@ -1,4 +1,3 @@
-import 'package:app/common/colors.dart';
 import 'package:app/common/prefs.dart';
 import 'package:app/common/routes.dart';
 import 'package:flutter/material.dart';
@@ -57,11 +56,11 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 TextSpan(
-                  text: 'Spots',
+                  text: 'Gems',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 52,
-                    color: AppColors.commonColor,
+                    color: Colors.green,
                   ),
                 ),
               ],

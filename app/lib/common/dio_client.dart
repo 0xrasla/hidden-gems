@@ -18,5 +18,7 @@ class ApiClient {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
+
+    _dio.interceptors.add(LogInterceptor(responseBody: true));
   }
 }

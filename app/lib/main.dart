@@ -3,6 +3,7 @@ import 'package:app/common/dio_client.dart';
 import 'package:app/common/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +16,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return MaterialApp(
       onGenerateRoute: Routes.generateRoute,
       initialRoute: Routes.splash,
@@ -24,6 +27,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: AppColors.commonColor),
         ),
+        textTheme: GoogleFonts.karlaTextTheme(textTheme),
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.commonColor),
         useMaterial3: true,
       ),

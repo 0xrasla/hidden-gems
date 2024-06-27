@@ -1,5 +1,6 @@
 import 'package:app/ui/screens/home_screen.dart';
 import 'package:app/ui/screens/login_screen.dart';
+import 'package:app/ui/screens/profile_screen.dart';
 import 'package:app/ui/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class Routes {
   static const String splash = '/';
   static const String login = '/login_screen';
   static const String home = '/home_screen';
+  static const String profile = '/profile_screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -14,6 +16,8 @@ class Routes {
         return _fadeAnimation(const SplashScreen());
       case login:
         return _fadeAnimation(const LoginScreen());
+      case profile:
+        return _fadeAnimation(const ProfileScreen());
       case home:
         return _fadeAnimation(const HomeScreen());
       default:
