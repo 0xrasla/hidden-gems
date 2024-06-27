@@ -12,11 +12,10 @@
     "elysia": "latest",
     "jsonwebtoken": "^9.0.2",
     "logestic": "^1.2.0",
-    "mongoose": "^8.4.1"
-  },
-  "devDependencies": {
+    "mongoose": "^8.4.1",
     "@types/jsonwebtoken": "^9.0.6",
     "bun-types": "latest"
   },
+  "devDependencies": {},
   "module": "src/index.js"
 }
