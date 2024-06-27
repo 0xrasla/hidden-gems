@@ -1,3 +1,4 @@
+// @ts-ignore
 import cors from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
@@ -7,6 +8,7 @@ import baseRouter from "./routes/router";
 
 const app = new Elysia();
 
+// @ts-ignore
 app.use(cors());
 
 try {
