@@ -1,5 +1,5 @@
 // @ts-ignore
-import cors from "@elysiajs/cors";
+// import cors from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import { Logestic } from "logestic";
@@ -9,7 +9,7 @@ import baseRouter from "./routes/router";
 const app = new Elysia();
 
 // @ts-ignore
-app.use(cors());
+// app.use(cors());
 
 try {
   await mongoose.connect(process.env.MONGO_URI as string, {
